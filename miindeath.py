@@ -30,7 +30,6 @@ from time import sleep
 from urllib3 import disable_warnings
 from signal import signal, SIG_IGN
 from os import (
-                
                 getcwd,
                 chdir,
                 access,
@@ -38,14 +37,18 @@ from os import (
                 R_OK,
                 kill,
                 getpid,
-                name as whoami
-                
-                )
+                name as whoami)
 from os.path import isdir, isfile, basename
 from getpass import getuser
 from subprocess import Popen, STDOUT, PIPE
 
-SIGKILL = 9 # Lo hago por Windows :p
+if (whoami == 'nt'):
+
+    SIGKILL = 9 # Lo hago por Windows :p
+
+else:
+
+    from signal import SIGKILL
 
 # No me lastimaras :)
 
