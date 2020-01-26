@@ -221,8 +221,6 @@ def main():
                                             file_object.write(simple_requests(verify[1]))
 
                                     except Exception as Except:
-                                        raise
-
                                         data = 'Ocurrio una excepción al descargar a "{}". Excepción: "{}"'.format(save_this_name, Except)
 
                                     else:
